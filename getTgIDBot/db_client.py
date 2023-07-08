@@ -3,13 +3,6 @@ from decouple import config
 import psycopg2
 
 
-# TOKEN=6174280094:AAHNAoz1ZEeKOxCWLwaEWHZ2vP2-DiRbIto
-# DB_NAME=AutoService
-# DB_USER=postgres
-# DB_PASSWORD=Az7735035
-# DB_HOST=localhost
-# DB_PORT=5432
-
 class UserData:
     def show_user_data(self, tg_login):
         with psycopg2.connect(
