@@ -20,6 +20,10 @@ const SectionServiceOrder = () => {
             return response.json()
         }).catch(e => console.log(e))
     }
+    function ShowClientDataContainer(){
+        document.getElementById('problemsContainer').classList.add('block_hidden');
+        document.getElementById('getClientData').classList.remove('block_hidden')
+    }
     return (
         <section className="order order_bg" id="order">
             <div className="container">
@@ -48,8 +52,11 @@ const SectionServiceOrder = () => {
                                 )
                             }
                         </div>
+                        <div className="next-btn__items">
+                            <a className="button next-button">Далее</a>
+                        </div>
                     </div>
-                    <div className="user-data__container " id="getClientData">
+                    <div className="user-data__container block_hidden" id="getClientData">
                         <div className="methods__items">
                             {
                                 methods && methods.map(m =>

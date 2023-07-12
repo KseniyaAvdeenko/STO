@@ -399,7 +399,10 @@ section {
     line-height: 30px;
     color: #FFFFFF;
 }
-
+.next-button{
+    text-decoration: none;
+    cursor: pointer;
+}
 .user-data__container {
     display: flex;
     flex-direction: column;

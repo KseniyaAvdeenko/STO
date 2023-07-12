@@ -6,6 +6,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from . import mongodb_client
 from .serializers import UsersSerializer, AdvantageSerializer, TextAboutSerializer, ProblemSerializer, \
     NtfMethodSerializer
 from .models import User, Advantage, TextAbout, Problem, NtfMethod
@@ -27,8 +28,8 @@ class UsersView(viewsets.ModelViewSet):
     http_method_names = ['get', 'put', 'patch', 'delete']
 
 
-def form_message(service_types, car, name, phone, ntf_method):
-    message = f'Оставлена заявка с AutoServiceApp:\n\n'
+def form_message(service_types, car, name, phone, ntf_method, date):
+    message = f'Оставлена заявка с AutoServiceApp {date}:\n\n'
     for s_t in service_types:
         message += 'Вид обслуживания: {} \n'.format(s_t)
     message += '\nДанные клиента:\n'
@@ -40,7 +41,7 @@ def form_message(service_types, car, name, phone, ntf_method):
 
 
 def send_app_to_tg(data):
-    msg = form_message(data['types'], data['car'], data['name'], data['phone'], data['ntf_method'])
+    msg = form_message(data['types'], data['car'], data['name'], data['phone'], data['ntf_method'], data['date'])
     # print(msg)
     send_app_tg(msg)
 
@@ -51,6 +52,7 @@ def send_tg_data(request):
     print(request.body)
     data = json.loads(request.body)
     print(data)
+    mongodb_client.MongoCl('mongodb://localhost:27017', 'Autoservice').insert_data('applications', data)
     send_app_to_tg(data)
     return JsonResponse(data)
 
