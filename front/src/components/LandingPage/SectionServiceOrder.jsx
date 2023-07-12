@@ -4,6 +4,8 @@ import {getNtfMethods, getProblems, sendAppToTg} from "../AutoServiceFetch";
 
 
 const SectionServiceOrder = () => {
+    let now = new Date()
+    let currentDate = `${now.getFullYear()}-${now.getMonth()<10?'0'+now.getMonth(): now.getMonth()}-${now.getDate()<10? '0'+now.getDate(): now.getDate()}`
     const [problems, setProblems] = useState([])
     const [methods, setMethods] = useState([])
     useEffect(() => {
@@ -14,6 +16,7 @@ const SectionServiceOrder = () => {
     }, [])
     const {register, handleSubmit} = useForm()
     const onSubmit = async (data) => {
+        data.date = currentDate
         console.log(JSON.stringify(data))
         sendAppToTg(data).then(function (response) {
             console.log(response.status, response.statusText)
@@ -53,7 +56,7 @@ const SectionServiceOrder = () => {
                             }
                         </div>
                         <div className="next-btn__items">
-                            <a className="button next-button">Далее</a>
+                            <a className="button next-button" onClick={ShowClientDataContainer}>Далее</a>
                         </div>
                     </div>
                     <div className="user-data__container block_hidden" id="getClientData">
