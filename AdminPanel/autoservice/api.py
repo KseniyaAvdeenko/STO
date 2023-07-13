@@ -49,11 +49,10 @@ def send_app_to_tg(data):
 @csrf_exempt
 @permission_classes([AllowAny])
 def send_tg_data(request):
-    print(request.body)
     data = json.loads(request.body)
     print(data)
-    mongodb_client.MongoCl('mongodb://localhost:27017', 'Autoservice').insert_data('applications', data)
     send_app_to_tg(data)
+    mongodb_client.MongoCl('mongodb://localhost:27017', 'Autoservice').insert_data('applications', json.loads(request.body))
     return JsonResponse(data)
 
 

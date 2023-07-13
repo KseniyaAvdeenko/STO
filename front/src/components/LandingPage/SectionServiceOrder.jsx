@@ -5,6 +5,8 @@ import {getNtfMethods, getProblems, sendAppToTg} from "../AutoServiceFetch";
 
 const SectionServiceOrder = () => {
     let now = new Date()
+    let id = parseInt(`${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}${now.getMilliseconds()}`)
+    // console.log(id)
     let currentDate = `${now.getFullYear()}-${now.getMonth()<10?'0'+now.getMonth(): now.getMonth()}-${now.getDate()<10? '0'+now.getDate(): now.getDate()}`
     const [problems, setProblems] = useState([])
     const [methods, setMethods] = useState([])
@@ -17,9 +19,13 @@ const SectionServiceOrder = () => {
     const {register, handleSubmit} = useForm()
     const onSubmit = async (data) => {
         data.date = currentDate
+        data._id = id
         console.log(JSON.stringify(data))
         sendAppToTg(data).then(function (response) {
             console.log(response.status, response.statusText)
+            if (response.status === 200){
+                window.location.reload()
+            }
             return response.json()
         }).catch(e => console.log(e))
     }
