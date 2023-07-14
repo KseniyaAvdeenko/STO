@@ -1,6 +1,5 @@
 import CrossIcon from "../../../assets/img/cross.png";
 import TickIcon from "../../../assets/img/tick.png";
-import CloseIcon from "../../../assets/img/close.png";
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import EditOrder from "./EditOrder"
@@ -25,19 +24,20 @@ const AdminOrderById = ({types}) => {
 
     function getClient(obj) {
         let client = {}
-        Object.values(obj).map((value) => [value])[5] && Object.values(obj).map((value) => [value])[5].map(result => {
+        Object.values(obj).map((value) => [value])[1] && Object.values(obj).map((value) => [value])[1].map(result => {
             client = result
         })
         return client
     };
 
-    function getCar(obj) {
-        let car = {}
-        Object.values(obj).map((val) => [val])[4] && Object.values(obj).map((val) => [val])[4].map(res => {
-            car = res
-        })
-        return car
-    };
+    // console.log(getClient(order))
+    // function getCar(obj) {
+    //     let car = {}
+    //     Object.values(obj).map((val) => [val])[4] && Object.values(obj).map((val) => [val])[4].map(res => {
+    //         car = res
+    //     })
+    //     return car
+    // };
 
     function DeleteOrder() {
         deleteOrder(orderId).then(function (res) {
@@ -56,7 +56,7 @@ const AdminOrderById = ({types}) => {
                     order={order}
                     types={types}
                     getClient={getClient}
-                    getCar={getCar}
+                    // getCar={getCar}
                     modal={modal}
                 />
             </Modal>
@@ -65,21 +65,21 @@ const AdminOrderById = ({types}) => {
                  style={{margin: "200px auto"}}>
                 <div className="card" style={{width: "26rem"}}>
                     <div className="d-flex flex-column align-items-center py-3 px-2">
-                        <h5 className="card-4 fs-4 fw-bold">Заказ № {order.so_id}</h5>
-                        <p className="card-text fw-normal">Дата оформления: {order.order_date}</p>
+                        <h5 className="card-4 fs-4 fw-bold">Заказ № {order._id}</h5>
+                        <p className="card-text fw-normal">Дата оформления: {typeof order.order_date === "string"? order.order_date.slice(0,10): order.order_date}</p>
                     </div>
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item">
-                            <b>Имя клиента:</b> {getClient(order).client_name}<br/>
+                            <b>Имя клиента:</b> {getClient(order).name}<br/>
                             <b>Телефон:</b> {getClient(order).phone}<br/>
                             <b>Город:</b> {getClient(order).city}<br/>
-                            <b>Авто:</b> {getCar(getClient(order)).name}<br/>
+                            <b>Авто:</b> {getClient(order).car}<br/>
                         </li>
                         <li className="list-group-item">
                             <b>Вид обслуживания:</b><br/>
                             {
                                 order.service && order.service.map(service =>
-                                    <p key={service.s_id}>{service.type} - {service.price} BYN<br/></p>)
+                                    <p key={service._id}>{service.type} - {service.price} BYN<br/></p>)
                             }
                             <hr/>
                             <b>Итого:</b> {getSum(order.service)} BYN
@@ -110,7 +110,8 @@ const AdminOrderById = ({types}) => {
                         </li>
                     </ul>
                     <div className="d-flex justify-content-evenly py-3 px-2">
-                        <button type="button" className="btn btn-warning" onClick={()=>setModal(true)}>Изменить</button>
+                        <button type="button" className="btn btn-warning" onClick={() => setModal(true)}>Изменить
+                        </button>
                         <button type="button" className="btn btn-danger" onClick={DeleteOrder}>Удалить</button>
                     </div>
                 </div>

@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from AutoServiceFastApi import schemas
@@ -5,6 +7,7 @@ from AutoServiceFastApi.mongo_db_client import MongoCl
 from database import get_db
 import service
 from schemas import *
+
 
 router = APIRouter()
 mongo_url = 'mongodb://localhost:27017'
@@ -41,6 +44,7 @@ async def create_service(data: dict):
 
 @router.post('/create_order/', status_code=201)
 async def create_client(data: dict):
+    data['order_date'] = datetime.datetime.utcnow()
     return MongoCl(mongo_url, db_name).insert_one('orders', data)
 
 

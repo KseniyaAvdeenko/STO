@@ -77,26 +77,26 @@ function App() {
                             </div>
                         </RequireAuth>
                     }/>
-                     <Route path="admin-site/clients/" element={
-                        <RequireAuth>
-                            <div>
-                                <HeaderAdmin/>
-                                <div className="d-flex" id="wrapper">
-                                    <SideBar user={user}/>
-                                    <AdminClients/>
-                                </div>
-                            </div>
-                        </RequireAuth>
-                    }/>
-                    <Route path="admin-site/clients/:clientId" element={
-                        <RequireAuth>
-                            <div>
-                                <div className="d-flex" id="wrapper">
-                                    <AdminClientsById/>
-                                </div>
-                            </div>
-                        </RequireAuth>
-                    }/>
+                    {/* <Route path="admin-site/clients/" element={*/}
+                    {/*    <RequireAuth>*/}
+                    {/*        <div>*/}
+                    {/*            <HeaderAdmin/>*/}
+                    {/*            <div className="d-flex" id="wrapper">*/}
+                    {/*                <SideBar user={user}/>*/}
+                    {/*                <AdminClients/>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </RequireAuth>*/}
+                    {/*}/>*/}
+                    {/*<Route path="admin-site/clients/:clientId" element={*/}
+                    {/*    <RequireAuth>*/}
+                    {/*        <div>*/}
+                    {/*            <div className="d-flex" id="wrapper">*/}
+                    {/*                <AdminClientsById/>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </RequireAuth>*/}
+                    {/*}/>*/}
                     <Route path="admin-site/service/" element={
                         <RequireAuth>
                             <div>

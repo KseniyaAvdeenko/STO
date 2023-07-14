@@ -55,19 +55,19 @@ const SideBar = ({user}) => {
                                     Услуги
                                 </Link>
                             </li>
-                            <li>
-                                <Link to="http://127.0.0.1:3000/admin-site/clients/"
-                                   className="nav-link link-body-emphasis navigation"
-                                   id="navClients">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         className="bi bi-person-circle me-2" viewBox="0 0 16 16">
-                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                                        <path fillRule="evenodd"
-                                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                                    </svg>
-                                    Клиенты
-                                </Link>
-                            </li>
+                            {/*<li>*/}
+                            {/*    <Link to="http://127.0.0.1:3000/admin-site/clients/"*/}
+                            {/*       className="nav-link link-body-emphasis navigation"*/}
+                            {/*       id="navClients">*/}
+                            {/*        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"*/}
+                            {/*             className="bi bi-person-circle me-2" viewBox="0 0 16 16">*/}
+                            {/*            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>*/}
+                            {/*            <path fillRule="evenodd"*/}
+                            {/*                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>*/}
+                            {/*        </svg>*/}
+                            {/*        Клиенты*/}
+                            {/*    </Link>*/}
+                            {/*</li>*/}
                             {
                                 user.is_staff
                                     ? <li>
@@ -119,10 +119,18 @@ const SideBar = ({user}) => {
                                 </Link>
                             </li>
                             <hr/>
-                            <ul className="dropdown-menu text-small shadow">
-                                <li><Link to="http://127.0.0.1:3000/login/" className="dropdown-item" id="dropLoginBtn">Войти</Link></li>
-                                <li><Link className="dropdown-item" to="http://127.0.0.1:3000/signup/">Регистрация</Link></li>
-                            </ul>
+                            <div className="dropdown">
+                                <Link to="http://127.0.0.1:3000/admin-site/"
+                                   className="d-flex align-items-center justify-content-center p-2 link-body-emphasis text-decoration-none dropdown-toggle text-secondary-emphasis"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                </Link>
+                                <ul className="dropdown-menu text-small shadow">
+                                    <li><Link to="http://127.0.0.1:3000/login/" className="dropdown-item"
+                                              id="dropLoginBtn">Войти</Link></li>
+                                    <li><Link className="dropdown-item"
+                                              to="http://127.0.0.1:3000/signup/">Регистрация</Link></li>
+                                </ul>
+                            </div>
                         </ul>
                 }
             </div>

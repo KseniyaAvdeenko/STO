@@ -30,7 +30,7 @@ const AdminServiceTypeById = () => {
             <div className="d-flex justify-content-center align-items-center" style={{margin: "200px auto"}}>
                 <div className="card" style={{width: "26rem"}}>
                     <div className="d-flex flex-column align-items-center py-3 px-2">
-                        <h5 className="card-title fs-4 fw-bold">№ {type.s_id}</h5>
+                        <h5 className="card-title fs-4 fw-bold">№ {type._id}</h5>
                         <p className="card-text fw-normal" style={{textAlign: "center"}}>Вид
                             обслуживания: {type.type}</p>
                     </div>

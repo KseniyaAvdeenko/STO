@@ -40,12 +40,12 @@ export function AdminServiceTypes({types}) {
                         <tbody id="serviceTbody">
                         {
                             searchedTypes && searchedTypes.map(type =>
-                                <tr key={type.s_id}>
-                                    <td>{type.s_id}</td>
+                                <tr key={type._id}>
+                                    <td>{type._id}</td>
                                     <td>{type.type}</td>
                                     <td>{type.price}</td>
                                     <td>
-                                        <a href={`${type.s_id}/`} className="btn btn-info">Изменить/Удалить</a></td>
+                                        <a href={`${type._id}/`} className="btn btn-info">Изменить/Удалить</a></td>
                                 </tr>
                             )
                         }

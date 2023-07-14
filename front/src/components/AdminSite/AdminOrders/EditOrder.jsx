@@ -2,42 +2,53 @@ import React, {useState} from "react";
 import CloseIcon from "../../../assets/img/close.png";
 import {editClient, editOrder} from "../../AutoServiceFetch";
 
-const EditOrder = ({orderId, order, types, getClient, getCar, modal}) => {
+const EditOrder = ({orderId, order, types, getClient, modal}) => {
     const [newModal, setNewModal] = useState(modal)
 
     const onSubmit = (e) => {
-
         e.preventDefault()
         let form = e.target
-        let client = {
-            client_name: form.client_name.value,
-            phone: form.phone.value,
-            city: form.city.value,
-            car: {
-                car_id: getCar(getClient(order)).car_id,
-                name: form.car.value
-            }
-        }
+        // let client = {
+        //     client_name: form.client_name.value,
+        //     phone: form.phone.value,
+        //     city: form.city.value,
+        //     car: {
+        //         car_id: getCar(getClient(order)).car_id,
+        //         name: form.car.value
+        //     }
+        // }
 
         let orderForEdit = {
-            order_date: order.order_date,
-            car_client: getClient(order).cl_id,
+            client: {
+                name: form.client_name.value,
+                phone: form.phone.value,
+                city: form.city.value,
+                car: form.car.value
+            },
             diagnosis: document.getElementById('diagnosis').checked,
             in_progress: document.getElementById('progress').checked,
             is_finished: document.getElementById('finished').checked,
-            service: []
+            service: [],
+            order_date: order.order_date,
         }
+        // document.querySelectorAll('input[type="checkbox"]').forEach(cInput => {
+        //     if (cInput.checked) {
+        //         orderForEdit.service.push(parseInt(cInput.value))
+        //     }
+        // })
+        let service = []
         document.querySelectorAll('input[type="checkbox"]').forEach(cInput => {
             if (cInput.checked) {
-                orderForEdit.service.push(parseInt(cInput.value))
+                service.push(parseInt(cInput.value))
             }
         })
-
+        types && types.map(type => {
+            if (service.includes(type._id)) {
+                orderForEdit.service.push(type)
+            }
+        })
         console.log(orderForEdit)
-        console.log(client)
-        editClient(getClient(order).cl_id, client).then(function (res) {
-            if (res.status === 200) {
-                editOrder(orderId, orderForEdit).then(function (response) {
+        editOrder(orderId, orderForEdit).then(function (response) {
                     if (response.status === 200) {
                         alert("Данные текущего заказа изменены успешно!")
                         window.location.reload()
@@ -48,13 +59,26 @@ const EditOrder = ({orderId, order, types, getClient, getCar, modal}) => {
                     alert("Ошибка в изменении данных текущего заказа")
                     setNewModal(false)
                 })
-            }
-            return res.json()
-        }).catch(function (e) {
-            console.log(e)
-            alert("Ошибка в изменении данных клиента данного заказа")
-
-        })
+        // console.log(client)
+        // editClient(getClient(order).cl_id, client).then(function (res) {
+        //     if (res.status === 200) {
+        //         editOrder(orderId, orderForEdit).then(function (response) {
+        //             if (response.status === 200) {
+        //                 alert("Данные текущего заказа изменены успешно!")
+        //                 window.location.reload()
+        //             }
+        //             return response.json()
+        //         }).catch(function (e) {
+        //             console.log(e)
+        //             alert("Ошибка в изменении данных текущего заказа")
+        //             setNewModal(false)
+        //         })
+        //     }
+        //     return res.json()
+        // }).catch(function (e) {
+        //     console.log(e)
+        //     alert("Ошибка в изменении данных клиента данного заказа")
+        // })
     };
     return (
             <form className="form-box_small rounded-3" id="editForm" onSubmit={onSubmit}>
@@ -62,8 +86,8 @@ const EditOrder = ({orderId, order, types, getClient, getCar, modal}) => {
                 <div className="mb-3 form-select rounded-3 service-types__items">
                     {
                         types && types.map(type =>
-                            <div className="form-check" key={type.s_id}>
-                                <input className="form-check-input" type="checkbox" value={type.s_id} id={type.type}/>
+                            <div className="form-check" key={type._id}>
+                                <input className="form-check-input" type="checkbox" value={type._id} id={type.type}/>
                                 <label className="form-check-label" htmlFor={type.type}>{type.type}</label>
                             </div>
                         )

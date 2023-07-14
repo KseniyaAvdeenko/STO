@@ -7,7 +7,7 @@ const SectionService = (props) => {
                 <h1 className="title title_font service__title">Услуги</h1>
                 <div className="types__items" id="typesItems" >
                     {
-                        props.types && props.types.map(type => <div className="types__item" key={type.s_id}>{type.type}</div>)
+                        props.types && props.types.map(type => <div className="types__item" key={type._id}>{type.type}</div>)
                     }
                 </div>
             </div>

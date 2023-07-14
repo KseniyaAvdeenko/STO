@@ -30,11 +30,12 @@ const SectionPrices = ({types}) => {
                     <tbody id="tbody">
                     {
                         searchedTypes && searchedTypes.map(type =>
-                            <tr key={type.s_id}>
+                            <tr key={type._id}>
                                 <td className="table-dark">{type.type}</td>
                                 <td className="table-dark">{type.price}</td>
                             </tr>
-                        )}
+                        )
+                    }
                     </tbody>
                 </table>
             </div>

@@ -8,6 +8,7 @@ const AddServiceType = ({modal}) => {
     const {register, handleSubmit} = useForm()
 
     const onSubmit = (data) => {
+        data._id = Date.now()
         data.price = parseFloat(data.price)
         console.log(data)
         createService( data).then(function (response) {
