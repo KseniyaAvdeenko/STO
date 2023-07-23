@@ -187,56 +187,54 @@ export async function createOrder(data) {
 //============HTTP PUT
 export async function editService(id, data) {
     return await fetch(`${BASE_FASTAPI_URL}/edit_service/${id}/`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-        },
-        body: JSON.stringify(data)
+        method: 'PUT', headers: {'Content-Type': 'application/json;charset=utf-8'}, body: JSON.stringify(data)
     })
 };
+
 export async function editClient(id, data) {
     return await fetch(`${BASE_FASTAPI_URL}/edit_client/${id}/`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-        },
-        body: JSON.stringify(data)
+        method: 'PUT', headers: {'Content-Type': 'application/json;charset=utf-8'}, body: JSON.stringify(data)
     })
 };
+
+export async function editClientOrder(id, data) {
+    return await fetch(`${BASE_FASTAPI_URL}/edit_client_orders/${id}/`, {
+        method: 'PUT', headers: {'Content-Type': 'application/json;charset=utf-8'}, body: JSON.stringify(data)
+    })
+};
+
 export async function editOrder(id, data) {
     return await fetch(`${BASE_FASTAPI_URL}/edit_order/${id}/`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-        },
-        body: JSON.stringify(data)
+        method: 'PUT', headers: {'Content-Type': 'application/json;charset=utf-8'}, body: JSON.stringify(data)
     })
 };
 
 //============HTTP DELETE
 export async function deleteService(id) {
     return await fetch(`${BASE_FASTAPI_URL}/delete_service/${id}/`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-        },
+        method: 'DELETE', headers: {'Content-Type': 'application/json;charset=utf-8'},
     })
 };
 export async function deleteClient(id) {
     return await fetch(`${BASE_FASTAPI_URL}/delete_client/${id}/`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-        },
+        method: 'DELETE', headers: {'Content-Type': 'application/json;charset=utf-8'},
     })
 };
 export async function deleteOrder(id) {
     return await fetch(`${BASE_FASTAPI_URL}/delete_order/${id}/`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-        },
+        method: 'DELETE', headers: {'Content-Type': 'application/json;charset=utf-8'},
     })
 };
 
 
+//==========fast Api=======
+//-----GET data for statistics
+export async function getAppsStats() {
+    return await fetch(`${BASE_FASTAPI_URL}/application_stats/`).then(response => response.json())
+};
+export async function getAppsStatsQuery(from_date, to_date) {
+    return await fetch(`${BASE_FASTAPI_URL}/application_stats/?from_date=${from_date}&to_date=${to_date}`).then(response => response.json())
+};
+export async function getOrdersStats() {
+    return await fetch(`${BASE_FASTAPI_URL}/orders-stats/`).then(response => response.json())
+};

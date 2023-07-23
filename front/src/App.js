@@ -12,13 +12,14 @@ import AdminEmployees from "./components/AdminSite/AdminEmployees/AdminEmployees
 import HeaderAdmin from "./components/AdminSite/HeaderAdmin";
 import SideBar from "./components/AdminSite/SideBar";
 import AdminEmployeeById from "./components/AdminSite/AdminEmployees/AdminEmployeeById";
-import {getServiceTypes, getUserProfile, logoutFetch} from "./components/AutoServiceFetch";
+import {getClients, getServiceTypes, getUserProfile, logoutFetch} from "./components/AutoServiceFetch";
 import AdminClients from "./components/AdminSite/AdminClients/AdminClients";
 import AdminClientsById from "./components/AdminSite/AdminClients/AdminClientsById";
 import {AdminServiceTypes} from "./components/AdminSite/AdminServiceTypes/AdminServiceTypes";
 import AdminServiceTypeById from "./components/AdminSite/AdminServiceTypes/AdminServiceTypeById";
 import {AdminOrders} from "./components/AdminSite/AdminOrders/AdminOrders";
 import AdminOrderById from "./components/AdminSite/AdminOrders/AdminOrderById";
+import {AdminStats} from "./components/AdminSite/AdminStats/AdminStats";
 
 
 
@@ -37,7 +38,10 @@ function App() {
             getUserProfile(token).then(data => setUser(data));
         }
     }, [token])
-
+    const [clients, setClients] = useState([]);
+    useEffect(() => {
+        getClients().then(data => setClients(data))
+    }, [])
     return (
         <AuthProvider>
             <BrowserRouter>
@@ -77,26 +81,26 @@ function App() {
                             </div>
                         </RequireAuth>
                     }/>
-                    {/* <Route path="admin-site/clients/" element={*/}
-                    {/*    <RequireAuth>*/}
-                    {/*        <div>*/}
-                    {/*            <HeaderAdmin/>*/}
-                    {/*            <div className="d-flex" id="wrapper">*/}
-                    {/*                <SideBar user={user}/>*/}
-                    {/*                <AdminClients/>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </RequireAuth>*/}
-                    {/*}/>*/}
-                    {/*<Route path="admin-site/clients/:clientId" element={*/}
-                    {/*    <RequireAuth>*/}
-                    {/*        <div>*/}
-                    {/*            <div className="d-flex" id="wrapper">*/}
-                    {/*                <AdminClientsById/>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </RequireAuth>*/}
-                    {/*}/>*/}
+                     <Route path="admin-site/clients/" element={
+                        <RequireAuth>
+                            <div>
+                                <HeaderAdmin/>
+                                <div className="d-flex" id="wrapper">
+                                    <SideBar user={user} />
+                                    <AdminClients clients={clients}/>
+                                </div>
+                            </div>
+                        </RequireAuth>
+                    }/>
+                    <Route path="admin-site/clients/:clientId" element={
+                        <RequireAuth>
+                            <div>
+                                <div className="d-flex" id="wrapper">
+                                    <AdminClientsById/>
+                                </div>
+                            </div>
+                        </RequireAuth>
+                    }/>
                     <Route path="admin-site/service/" element={
                         <RequireAuth>
                             <div>
@@ -123,7 +127,7 @@ function App() {
                                 <HeaderAdmin/>
                                 <div className="d-flex" id="wrapper">
                                     <SideBar user={user}/>
-                                    <AdminOrders types={types}/>
+                                    <AdminOrders types={types} clients={clients}/>
                                 </div>
                             </div>
                         </RequireAuth>
@@ -133,6 +137,17 @@ function App() {
                             <div>
                                 <div className="d-flex" id="wrapper">
                                     <AdminOrderById types={types}/>
+                                </div>
+                            </div>
+                        </RequireAuth>
+                    }/>
+                     <Route path="admin-site/stats/" element={
+                        <RequireAuth>
+                            <div>
+                                <HeaderAdmin/>
+                                <div className="d-flex" id="wrapper">
+                                    <SideBar user={user}/>
+                                   <AdminStats/>
                                 </div>
                             </div>
                         </RequireAuth>

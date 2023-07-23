@@ -6,6 +6,7 @@ from .api import *
 router = SimpleRouter()
 router.register('admin_site/employees', UsersView, basename='employees')
 
+
 urlpatterns = [
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),

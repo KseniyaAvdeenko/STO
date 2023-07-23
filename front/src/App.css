@@ -16,7 +16,10 @@ body {
     color: #FFFFFF;
     background-color: #1E1E1E !important;
 }
-
+a{
+    text-decoration: none;
+    color: #006FFF;
+}
 header,
 footer,
 section {
@@ -254,7 +257,6 @@ section {
 .phone-input {
     width: 375px;
     height: 100px;
-
     margin-right: 40px;
     padding: 0 20px;
     box-sizing: border-box;

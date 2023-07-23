@@ -19,25 +19,16 @@ const AdminOrderById = ({types}) => {
         array && array.map(s => {
             sum += s.price
         })
-        return sum
+        return sum.toFixed(2)
     }
 
     function getClient(obj) {
         let client = {}
-        Object.values(obj).map((value) => [value])[1] && Object.values(obj).map((value) => [value])[1].map(result => {
+        Object.values(obj).map((value) => [value])[6] && Object.values(obj).map((value) => [value])[6].map(result => {
             client = result
         })
         return client
     };
-
-    // console.log(getClient(order))
-    // function getCar(obj) {
-    //     let car = {}
-    //     Object.values(obj).map((val) => [val])[4] && Object.values(obj).map((val) => [val])[4].map(res => {
-    //         car = res
-    //     })
-    //     return car
-    // };
 
     function DeleteOrder() {
         deleteOrder(orderId).then(function (res) {
@@ -56,7 +47,6 @@ const AdminOrderById = ({types}) => {
                     order={order}
                     types={types}
                     getClient={getClient}
-                    // getCar={getCar}
                     modal={modal}
                 />
             </Modal>
@@ -66,14 +56,19 @@ const AdminOrderById = ({types}) => {
                 <div className="card" style={{width: "26rem"}}>
                     <div className="d-flex flex-column align-items-center py-3 px-2">
                         <h5 className="card-4 fs-4 fw-bold">Заказ № {order._id}</h5>
-                        <p className="card-text fw-normal">Дата оформления: {typeof order.order_date === "string"? order.order_date.slice(0,10): order.order_date}</p>
+                        <p className="card-text fw-normal">Дата
+                            оформления: {typeof order.order_date === "string" ? order.order_date.slice(0, 10) : order.order_date}</p>
                     </div>
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item">
-                            <b>Имя клиента:</b> {getClient(order).name}<br/>
-                            <b>Телефон:</b> {getClient(order).phone}<br/>
-                            <b>Город:</b> {getClient(order).city}<br/>
-                            <b>Авто:</b> {getClient(order).car}<br/>
+                            {
+                                order.client && order.client.map(client => <div key={client._id}>
+                                    <b>Имя клиента:</b> {client.name}<br/>
+                                    <b>Телефон:</b> {client.phone}<br/>
+                                    <b>Город:</b> {client.city}<br/>
+                                    <b>Авто:</b> {client.car}<br/>
+                                </div>)
+                            }
                         </li>
                         <li className="list-group-item">
                             <b>Вид обслуживания:</b><br/>

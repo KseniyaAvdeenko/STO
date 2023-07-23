@@ -1,4 +1,3 @@
-import CloseIcon from "../../../assets/img/close.png";
 import {useForm} from "react-hook-form";
 import {createService} from "../../AutoServiceFetch";
 import {useState} from "react";

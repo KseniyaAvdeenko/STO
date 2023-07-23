@@ -2,49 +2,22 @@ import React, {useState} from "react";
 import CloseIcon from "../../../assets/img/close.png";
 import {editClient, editOrder} from "../../AutoServiceFetch";
 
-const EditOrder = ({orderId, order, types, getClient, modal}) => {
+const EditOrder = ({orderId, order, types, modal}) => {
     const [newModal, setNewModal] = useState(modal)
+    // console.log(order)
 
     const onSubmit = (e) => {
         e.preventDefault()
         let form = e.target
-        // let client = {
-        //     client_name: form.client_name.value,
-        //     phone: form.phone.value,
-        //     city: form.city.value,
-        //     car: {
-        //         car_id: getCar(getClient(order)).car_id,
-        //         name: form.car.value
-        //     }
-        // }
-
         let orderForEdit = {
-            client: {
-                name: form.client_name.value,
-                phone: form.phone.value,
-                city: form.city.value,
-                car: form.car.value
-            },
             diagnosis: document.getElementById('diagnosis').checked,
             in_progress: document.getElementById('progress').checked,
             is_finished: document.getElementById('finished').checked,
             service: [],
-            order_date: order.order_date,
         }
-        // document.querySelectorAll('input[type="checkbox"]').forEach(cInput => {
-        //     if (cInput.checked) {
-        //         orderForEdit.service.push(parseInt(cInput.value))
-        //     }
-        // })
-        let service = []
         document.querySelectorAll('input[type="checkbox"]').forEach(cInput => {
             if (cInput.checked) {
-                service.push(parseInt(cInput.value))
-            }
-        })
-        types && types.map(type => {
-            if (service.includes(type._id)) {
-                orderForEdit.service.push(type)
+                orderForEdit.service.push(parseInt(cInput.value))
             }
         })
         console.log(orderForEdit)
@@ -59,113 +32,59 @@ const EditOrder = ({orderId, order, types, getClient, modal}) => {
                     alert("Ошибка в изменении данных текущего заказа")
                     setNewModal(false)
                 })
-        // console.log(client)
-        // editClient(getClient(order).cl_id, client).then(function (res) {
-        //     if (res.status === 200) {
-        //         editOrder(orderId, orderForEdit).then(function (response) {
-        //             if (response.status === 200) {
-        //                 alert("Данные текущего заказа изменены успешно!")
-        //                 window.location.reload()
-        //             }
-        //             return response.json()
-        //         }).catch(function (e) {
-        //             console.log(e)
-        //             alert("Ошибка в изменении данных текущего заказа")
-        //             setNewModal(false)
-        //         })
-        //     }
-        //     return res.json()
-        // }).catch(function (e) {
-        //     console.log(e)
-        //     alert("Ошибка в изменении данных клиента данного заказа")
-        // })
     };
     return (
-            <form className="form-box_small rounded-3" id="editForm" onSubmit={onSubmit}>
-                <h2 className="subtitle subtitle_font" style={{textAlign: 'center'}}>Изменение заказа</h2>
-                <div className="mb-3 form-select rounded-3 service-types__items">
-                    {
-                        types && types.map(type =>
-                            <div className="form-check" key={type._id}>
-                                <input className="form-check-input" type="checkbox" value={type._id} id={type.type}/>
-                                <label className="form-check-label" htmlFor={type.type}>{type.type}</label>
-                            </div>
-                        )
-                    }
-                </div>
-                <div className="form-floating mb-3">
+        <form className="form-box_small rounded-3" id="editForm" style={{width: '80%'}} onSubmit={onSubmit}>
+            <h2 className="subtitle subtitle_font" style={{textAlign: 'center'}}>Изменение заказа</h2>
+            <div className="mb-3 form-select rounded-3 service-types__items">
+                {
+                    types && types.map(type =>
+                        <div className="form-check" key={type._id}>
+                            <input className="form-check-input" type="checkbox" value={type._id} id={type.type}/>
+                            <label className="form-check-label" htmlFor={type.type}>{type.type}</label>
+                        </div>
+                    )
+                }
+            </div>
+            <div className="d-flex flex-column align-items-start my-3" id="OrderStatus">
+                <div className="form-check">
                     <input
-                        type="text"
-                        name="client_name"
-                        className="form-control"
-                        placeholder="Имя и фамилия клиента"
-                        id="clientName"/>
-                    <label htmlFor="clientName" className="font-color_dark">Имя и фамилия клиента</label>
-                </div>
-                <div className="form-floating mb-3">
-                    <input
-                        type="text"
-                        name="phone"
-                        className="form-control"
-                        id="orderClientPhone"
-                        placeholder='Телефон клиента'/>
-                    <label htmlFor="orderClientPhone" className="font-color_dark">Телефон клиента</label>
-                </div>
-                <div className="form-floating mb-3">
-                    <input
-                        name="city"
-                        type="text"
-                        className="form-control"
-                        id="clientCity"
-                        placeholder='Город клиента'
+                        defaultChecked={order.diagnosis}
+                        className="form-check-input"
+                        type="radio"
+                        name="status"
+                        id="diagnosis"
                     />
-                    <label htmlFor="clientCity" className="font-color_dark">Город клиента</label>
+                    <label className="form-check-label" htmlFor="diagnosis">
+                        Диагностика
+                    </label>
                 </div>
-                <div className="form-floating">
+                <div className="form-check">
                     <input
-                        name="car"
-                        type="text"
-                        className="form-control"
-                        id="clientCar"
-                        placeholder='Марка и модель авто клиента'/>
-                    <label htmlFor="clientCar" className="font-color_dark">Марка и модель авто клиента</label>
+                        defaultChecked={order.in_progress}
+                        className="form-check-input"
+                        type="radio"
+                        name="status"
+                        id="progress"/>
+                    <label className="form-check-label" htmlFor="progress">
+                        На обслуживании
+                    </label>
                 </div>
-                <div className="d-flex flex-column align-items-start my-3" id="OrderStatus">
-                    <div className="form-check">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            name="status"
-                            id="diagnosis"
-                        />
-                        <label className="form-check-label" htmlFor="diagnosis">
-                            Диагностика
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            name="status"
-                            id="progress"/>
-                        <label className="form-check-label" htmlFor="progress">
-                            На обслуживании
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            name="status"
-                            id="finished"
-                        />
-                        <label className="form-check-label" htmlFor="finished">
-                            Обслуживание закончено
-                        </label>
-                    </div>
+                <div className="form-check">
+                    <input
+                        defaultChecked={order.is_finished}
+                        className="form-check-input"
+                        type="radio"
+                        name="status"
+                        id="finished"
+                    />
+                    <label className="form-check-label" htmlFor="finished">
+                        Обслуживание закончено
+                    </label>
                 </div>
-                <button type="submit" className="btn btn-secondary mt-3">Сохранить</button>
-            </form>
+            </div>
+            <button type="submit" className="btn btn-secondary mt-3">Сохранить</button>
+        </form>
     )
 };
 export default EditOrder;

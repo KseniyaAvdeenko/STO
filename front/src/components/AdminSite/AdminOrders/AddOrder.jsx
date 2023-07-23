@@ -1,37 +1,38 @@
 import React, {useState} from "react";
 import CloseIcon from "../../../assets/img/close.png";
 import {useForm} from "react-hook-form";
-import {createClientWithCar, createOrder, getServiceById} from "../../AutoServiceFetch";
+import {createClientWithCar, createOrder, editClientOrder, getServiceById} from "../../AutoServiceFetch";
+import {Link} from "react-router-dom";
 
-const AddOrder = ({types, modal}) => {
+const AddOrder = ({types, modal, clients}) => {
     const [newModal, setNewModal] = useState(modal)
     const {register, handleSubmit} = useForm()
-    let now = new Date()
     const onSubmit = (data) => {
         function GetServiceTypes() {
             let serviceTypes = [];
             data.types.map(id => {
-                types && types.map(type => {
-                    if (type._id === parseInt(id)) {
-                        serviceTypes.push(type)
-                    }
-                })
+                serviceTypes.push(parseInt(id))
             });
             return serviceTypes
         }
 
-        console.log(GetServiceTypes())
         let order = {
             _id: Date.now(),
-            client: data.client,
             diagnosis: true,
             in_progress: false,
             is_finished: false,
             service: GetServiceTypes(),
+            client: parseInt(data.client)
         }
-        console.log(JSON.stringify(order))
+        // console.log(order._id)
+        // console.log(order.client)
+        let order_num = {orders: order._id}
         createOrder(order).then(function (res) {
             if (res.status === 201) {
+                editClientOrder(order.client, order_num).then(function (res) {
+                    console.log(res.status)
+                    return res.json()
+                })
                 alert("Заказ создан")
                 window.location.reload()
             }
@@ -60,43 +61,57 @@ const AddOrder = ({types, modal}) => {
                     )
                 }
             </div>
-            <div className="form-floating mb-3">
-                <input
-                    {...register("client.name")}
-                    type="text"
-                    className="form-control"
-                    placeholder="Имя и фамилия клиента"
-                    id="carClientName"
-                />
-                <label htmlFor="carClientName" className="font-color_dark">Имя и фамилия клиента</label>
-            </div>
-            <div className="form-floating mb-3">
-                <input
-                    {...register("client.phone")}
-                    type="text"
-                    className="form-control"
-                    id="carClientPhone"
-                    placeholder='Телефон клиента'/>
-                <label htmlFor="carClientPhone" className="font-color_dark">Телефон клиента</label>
-            </div>
-            <div className="form-floating mb-3">
-                <input
-                    {...register("client.city")}
-                    type="text"
-                    className="form-control"
-                    id="carClientCity"
-                    placeholder='Город клиента'/>
-                <label htmlFor="carClientCity" className="font-color_dark">Город клиента</label>
-            </div>
-            <div className="form-floating">
-                <input
-                    {...register("client.car")}
-                    type="text"
-                    className="form-control"
-                    id="CarClientCar"
-                    placeholder='Марка и модель авто клиента'/>
-                <label htmlFor="CarClientCar" className="font-color_dark">Марка и модель авто клиента</label>
-            </div>
+            <select className="form-select mb-3" {...register('client')}>
+                <option>Выберите клиента</option>
+                {
+                    clients && clients.map(client =>
+                        <option key={client._id} value={client._id}>
+                            {client.name} {client.phone} {client.car}
+                        </option>
+                    )
+                }
+            </select>
+            <p>Нет нужного клиента?
+                <Link to="http://127.0.0.1:3000/admin-site/clients/"> Добавьте нового</Link>
+            </p>
+
+            {/*<div className="form-floating mb-3">*/}
+            {/*    <input*/}
+            {/*        {...register("client.name")}*/}
+            {/*        type="text"*/}
+            {/*        className="form-control"*/}
+            {/*        placeholder="Имя и фамилия клиента"*/}
+            {/*        id="carClientName"*/}
+            {/*    />*/}
+            {/*    <label htmlFor="carClientName" className="font-color_dark">Имя и фамилия клиента</label>*/}
+            {/*</div>*/}
+            {/*<div className="form-floating mb-3">*/}
+            {/*    <input*/}
+            {/*        {...register("client.phone")}*/}
+            {/*        type="text"*/}
+            {/*        className="form-control"*/}
+            {/*        id="carClientPhone"*/}
+            {/*        placeholder='Телефон клиента'/>*/}
+            {/*    <label htmlFor="carClientPhone" className="font-color_dark">Телефон клиента</label>*/}
+            {/*</div>*/}
+            {/*<div className="form-floating mb-3">*/}
+            {/*    <input*/}
+            {/*        {...register("client.city")}*/}
+            {/*        type="text"*/}
+            {/*        className="form-control"*/}
+            {/*        id="carClientCity"*/}
+            {/*        placeholder='Город клиента'/>*/}
+            {/*    <label htmlFor="carClientCity" className="font-color_dark">Город клиента</label>*/}
+            {/*</div>*/}
+            {/*<div className="form-floating">*/}
+            {/*    <input*/}
+            {/*        {...register("client.car")}*/}
+            {/*        type="text"*/}
+            {/*        className="form-control"*/}
+            {/*        id="CarClientCar"*/}
+            {/*        placeholder='Марка и модель авто клиента'/>*/}
+            {/*    <label htmlFor="CarClientCar" className="font-color_dark">Марка и модель авто клиента</label>*/}
+            {/*</div>*/}
             <button type="submit" className="btn btn-secondary mt-3">Создать</button>
         </form>
     )

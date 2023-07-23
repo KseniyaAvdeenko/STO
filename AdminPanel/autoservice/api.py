@@ -6,12 +6,13 @@ from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
-from . import mongodb_client
-from .serializers import UsersSerializer, AdvantageSerializer, TextAboutSerializer, ProblemSerializer, \
-    NtfMethodSerializer
-from .models import User, Advantage, TextAbout, Problem, NtfMethod
+from .serializers import *
+from .models import *
 from .tg_sender.tg_sender import send_app_tg
+from pymongo import MongoClient
+from decouple import config
+
+mongo_client = MongoClient(config("MONGO_URL"))[config("MONGO_DB")]
 
 
 class UserView(generics.RetrieveUpdateAPIView):
@@ -53,7 +54,7 @@ def send_tg_data(request):
     data = json.loads(request.body)
     data['date'] = datetime.datetime.utcnow()
     send_app_to_tg(data)
-    mongodb_client.MongoCl('mongodb://localhost:27017', 'Autoservice').insert_data('applications', data)
+    mongo_client.applications.insert_one(data)
     return JsonResponse(data)
 
 

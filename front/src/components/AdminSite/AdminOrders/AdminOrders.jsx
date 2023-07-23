@@ -4,8 +4,9 @@ import {getOrders} from "../../AutoServiceFetch";
 import CrossIcon from "../../../assets/img/cross.png";
 import TickIcon from "../../../assets/img/tick.png";
 import Modal from "../../UI/Modal/Modal";
+import {Link} from "react-router-dom";
 
-export function AdminOrders({types}) {
+export function AdminOrders({types, clients}) {
     const [modal, setModal] = useState(false)
     const [orders, setOrders] = useState([])
     useEffect(() => {
@@ -18,14 +19,14 @@ export function AdminOrders({types}) {
         array && array.map(s => {
             sum += s.price
         })
-        return sum
+        return sum.toFixed(2)
     }
 
     return (
         <main className="container" style={{minHeight: "80vh"}}>
             <div className='admin_orders' id="adminOrders" style={{width: "100%"}}>
                 <Modal visible={modal} setVisible={setModal}>
-                    <AddOrder types={types} modal={modal}/>
+                    <AddOrder types={types} modal={modal} clients={clients}/>
                 </Modal>
 
                 <div className="d-flex flex-column justify-content-center align-items-end ">
@@ -50,12 +51,18 @@ export function AdminOrders({types}) {
                         {
                             orders && orders.map(order =>
                                 <tr key={order._id}>
-                                    <td>{order.order_date}</td>
-                                    <td>
-                                        {order.client.name}<br/>
-                                        {order.client.city}<br/>
-                                        {order.client.phone}<br/>
-                                        {order.client.car}
+                                    <td>{typeof order.order_date === "string" ? order.order_date.slice(0, 10) : order.order_date}</td>
+                                    <td>{
+                                        order.client && order.client.map(client =>
+                                            <div key={client._id}>
+                                                <a href={`http://127.0.0.1:3000/admin-site/clients/${client._id}`}>{client.name}<br/></a>
+                                                {client.city}<br/>
+                                                {client.phone}<br/>
+                                                {client.car}
+                                            </div>
+                                        )
+                                    }
+
                                     </td>
                                     <td>
                                         {

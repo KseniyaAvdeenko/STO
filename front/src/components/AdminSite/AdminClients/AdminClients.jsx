@@ -4,16 +4,12 @@ import AddClient from "./AddClient";
 import Input from "../../UI/Input";
 import Modal from "../../UI/Modal/Modal";
 
-const AdminClients = () => {
+const AdminClients = ({clients}) => {
     const [modal, setModal] = useState(false)
-    const [clients, setClients] = useState([]);
-    useEffect(() => {
-        getClients().then(data => setClients(data))
-    }, [])
 
     const [searchClientsQuery, setSearchClientsQuery] = useState("")
     const searchedClients = useMemo(() => {
-        return clients && clients.filter(client => client.client_name.toLowerCase().includes(searchClientsQuery))
+        return clients && clients.filter(client => client.name.toLowerCase().includes(searchClientsQuery))
     }, [searchClientsQuery, clients])
 
     return (
@@ -39,6 +35,7 @@ const AdminClients = () => {
                         <thead>
                         <tr>
                             <th scope="col">Имя и фамилия клиента</th>
+                            <th scope="col">Телефон клиента</th>
                             <th scope="col">Авто клиента</th>
                             <th scope="col"></th>
                         </tr>
@@ -46,10 +43,11 @@ const AdminClients = () => {
                         <tbody id="clientsTbody">
                         {
                             searchedClients && searchedClients.map(cl =>
-                                <tr key={cl.cl_id}>
-                                    <td>{cl.client_name} </td>
-                                    <td>{cl.car.name}</td>
-                                    <td><a href={`${cl.cl_id}/`} className="btn btn-info">Посмотреть</a></td>
+                                <tr key={cl._id}>
+                                    <td>{cl.name} </td>
+                                    <td>{cl.phone} </td>
+                                    <td>{cl.car}</td>
+                                    <td><a href={`${cl._id}/`} className="btn btn-info">Посмотреть</a></td>
                                 </tr>)
                         }
                         </tbody>
